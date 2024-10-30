@@ -48,6 +48,21 @@ void DFRobot_LCD::init()
     begin(_cols, _rows);
 }
 
+
+void i2c_master_init()
+{
+    i2c_config_t conf;
+    conf.mode = I2C_MODE_MASTER;
+    conf.sda_io_num = I2C_MASTER_SDA_IO;
+    conf.sda_pullup_en = GPIO_PULLUP_ENABLE;
+    conf.scl_io_num = I2C_MASTER_SCL_IO;
+    conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
+    conf.master.clk_speed = I2C_MASTER_FREQ_HZ;
+    i2c_param_config(I2C_MASTER_NUM, &conf);
+    i2c_driver_install(I2C_MASTER_NUM, conf.mode, 0, 0, 0);
+}
+
+
 void DFRobot_LCD::clear()
 {
     command(LCD_CLEARDISPLAY);        // clear display, set cursor position to zero
@@ -229,7 +244,9 @@ void DFRobot_LCD::load_custom_character(uint8_t char_num, uint8_t *rows)
 
 void DFRobot_LCD::printstr(const char c[])
 {
-    print(c);
+    for (size_t i = 0; i < strlen(c); i++) {
+        write(c[i]); // Use the write method to send each character to the LCD
+    }
 }
 
 /*******************************private*******************************/
@@ -296,18 +313,6 @@ void DFRobot_LCD::setReg(uint8_t addr, uint8_t data)
     i2c_cmd_link_delete(cmd);
 }
 
-void i2c_master_init()
-{
-    i2c_config_t conf;
-    conf.mode = I2C_MODE_MASTER;
-    conf.sda_io_num = I2C_MASTER_SDA_IO;
-    conf.sda_pullup_en = GPIO_PULLUP_ENABLE;
-    conf.scl_io_num = I2C_MASTER_SCL_IO;
-    conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
-    conf.master.clk_speed = I2C_MASTER_FREQ_HZ;
-    i2c_param_config(I2C_MASTER_NUM, &conf);
-    i2c_driver_install(I2C_MASTER_NUM, conf.mode, 0, 0, 0);
-}
 
 /************************unsupported API functions***************************/
 void DFRobot_LCD::off(){}
