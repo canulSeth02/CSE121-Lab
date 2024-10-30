@@ -216,6 +216,17 @@ public:
    */
   void setPWM(uint8_t color, uint8_t pwm){setReg(color, pwm); if(_RGBAddr==0x6B){setReg(0x07, pwm);}}      // set pwm
 
+    /**
+     * @fn i2cWriteByte
+     * @brief Write a byte to the specified I2C address
+     * @param addr The I2C address
+     * @param data The byte data to write
+     * @return ESP_OK on success, an error code on failure
+     */
+    esp_err_t i2cWriteByte(uint8_t addr, uint8_t data);
+
+
+
   /**
    * @fn setColor
    * @brief backlight color
@@ -249,7 +260,13 @@ public:
    * @param mode  true indicates the backlight is turned on and set to white, false indicates the backlight is turned off
    */
   void setBacklight(bool mode);
-  
+      
+    /**
+     * @fn delayMS
+     * @brief Delay function for ESP32C3
+     * @param ms Delay time in milliseconds
+     */
+    void delayMS(int ms);
 private:
   /**
    * @fn begin
