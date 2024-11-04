@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "DFRobot_RGBLCD1602.h"
+#include "DFRobot_RGBLCD1602_ESP32C3.h"
 #include "driver/i2c.h" // Include ESP-IDF I2C driver
 
 const uint8_t color_define[4][3] = 
